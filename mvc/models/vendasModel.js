@@ -49,12 +49,12 @@ class Venda {
     }
 
 
-    constructor(hora, dia, cupons, skins) {
+    constructor(hora, dia, skins,cupons ) {
 
         this.#hora = hora;
         this.#dia = dia;
-        this.#cupons = cupons;
         this.#skins = skins;
+        this.#cupons = cupons;
 
     }
 
@@ -63,8 +63,9 @@ class Venda {
             "id": this.#id,
             "hora_venda": this.#hora,
             "dia_venda": this.#dia,
-            "cupons": this.#cupons,
-            "skins": this.#skins
+              "skins": this.#skins,
+            "cupons": this.#cupons
+          
         }
     }
 }

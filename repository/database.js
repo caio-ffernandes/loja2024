@@ -256,7 +256,39 @@ class Database {
         const bd = await this.#connection.execute(sql);
         return bd[0];
     }
+    async somarVenda() {
+        try {
+            const [rows, fields] = await this.#connection.execute(`
+                SELECT SUM(skins.valor_skin) AS total
+                FROM vendas
+                LEFT JOIN skins ON vendas.skins_id_skin = skins.id_skin;
+            `);
+    
+            return rows[0].total;
+        } catch (error) {
+            console.error('Erro ao somar vendas:', error.message);
+            throw error;
+        }
+    }
+    
 
+    async calcularDiferencaSkinsCupons() {
+    try {
+        const [rows, fields] = await this.#connection.execute(`
+            SELECT (SUM(skins.valor_skin) - SUM(cupons.valor_cupom)) AS diferenca
+            FROM vendas
+            INNER JOIN skins ON skins.id_skin = vendas.skins_id_skin
+            INNER JOIN cupons ON cupons.id_cupom = vendas.cupons_id_cupon;
+        `);
+
+        return rows[0].diferenca;
+    } catch (error) {
+        console.error('Erro ao calcular diferença entre skins e cupons:', error.message);
+        throw error;
+    }
+}
+
+    
       async selecionarVendas() {
         const vendasData = await this.#connection.query("SELECT * FROM vendas;");
         return vendasData[0];
@@ -272,13 +304,14 @@ class Database {
         return vendas_Data[0]
     }
 
-    async updateVenda(hora, dia, id) {
+    async updateVenda(hora, dia,skins,cupons, id) {
         const sql = `
             UPDATE vendas
             SET hora_venda = '${hora}',
             dia_venda = '${dia}',
-            cupons_id_cupon  = '${cupons}',
-            skins_id_skin = '${skins}'
+            skins_id_skin = '${skins}',
+            cupons_id_cupon  = '${cupons}'
+           
             WHERE id_venda = ${id};
         `;
     

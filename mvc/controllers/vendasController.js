@@ -82,9 +82,9 @@ module.exports = (app) => {
         res.setHeader("Access-Control-Allow-Origin","*")
 
         //Destructuring
-        const {id, hora, dia, cupons, skins} = req.body
+        const {id, hora, dia,skins , cupons} = req.body
 
-        const r = await vendaDAO.atualizarVenda(id, hora, dia, cupons, skins)
+        const r = await vendaDAO.atualizarVenda(id, hora, dia,skins ,cupons )
 
         res.json({r})
 

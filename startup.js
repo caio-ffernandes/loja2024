@@ -113,7 +113,9 @@ app.get("/home",verificarAutenticacao, async (req, res) => {
     const vendasCount=await db.selecionarVendaCount(); 
     const descontosCount=await db.selecionarDescontoCount(); 
     const cuponsCount=await db.selecionarCupomCount();
-        res.render('home', { userEmail: req.session.user.email,skinsCount:skinsCount,gamersCount:gamersCount,vendasCount:vendasCount,descontosCount:descontosCount,cuponsCount:cuponsCount });
+    const vendaSoma=await db.somarVenda();
+    const vendaDiferenca=await db.calcularDiferencaSkinsCupons();
+        res.render('home', { userEmail: req.session.user.email,skinsCount:skinsCount,gamersCount:gamersCount,vendasCount:vendasCount,descontosCount:descontosCount,cuponsCount:cuponsCount,vendaSoma:vendaSoma,vendaDiferenca:vendaDiferenca });
     
 });
 

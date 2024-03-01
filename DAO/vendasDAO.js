@@ -54,8 +54,7 @@ class VendaDAO {
         venda.dia = dia;
         venda.cupons = cupons;
         venda.skins = skins;
-        const valorTotal = await this.calcularValorTotalVendas(skins);
-        console.log('O valor total das vendas é:', valorTotal);
+       
         await this.#conexao.insertVenda(venda.hora, venda.dia, venda.cupons, venda.skins);
     }
 
@@ -64,9 +63,10 @@ class VendaDAO {
         venda.id = id;
         venda.hora = hora;
         venda.dia = dia;
-        venda.cupons = cupons;
         venda.skins = skins;
-        const resultado = await this.#conexao.updateVenda(venda.hora, venda.dia, venda.cupons, venda.skins, venda.id);
+        venda.cupons = cupons;
+        
+        const resultado = await this.#conexao.updateVenda(venda.hora, venda.dia, venda.skins,venda.cupons , venda.id);
         return resultado;
     }
 
