@@ -80,8 +80,8 @@ async atualizarSkin(id,categoria, nome, descricao, genero, valor, raridade, foto
 
     skin.id = id
     skin.nomeSkin = nome
-    skin.categoriaSkin = categoria
-    skin.descricaoSkin = descricao
+    skin.categoria = categoria
+    skin.descricao = descricao
     skin.generoSkin= genero
     skin.valorSkin = valor
     skin.raridade = raridade
@@ -89,7 +89,7 @@ async atualizarSkin(id,categoria, nome, descricao, genero, valor, raridade, foto
     skin.foto2=foto2
     skin.promocoes=promocoes
 
-    const dt = await this.#conexao.updateSkin(skin.categoriaSkin,skin.nomeSkin,  skin.descricaoSkin ,  skin.generoSkin,skin.valorSkin,skin.raridade,skin.foto1,skin.foto2,skin.id)
+    const dt = await this.#conexao.updateSkin(skin.categoria,skin.nomeSkin,  skin.descricao ,  skin.generoSkin,skin.valorSkin,skin.raridade,skin.foto1,skin.foto2,skin.id)
     return dt
 }
 

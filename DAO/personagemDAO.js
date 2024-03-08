@@ -70,17 +70,21 @@ class PersonagemDAO {
         return objpersonagem.toJson()
     }
 
-    async atualizarCupom(id, nome, codigo, validade, valor){
+    async atualizarPersonagem(id,nome, genero, tipo, totalcoin,latitude,longitude,skin){
 
-        const cupom = new Cupom()
+        const personagem = new Personagem()
 
-        cupom.id = id
-        cupom.nomeCupom = nome
-        cupom.codCupom = codigo
-        cupom.validadeCupom = validade
-        cupom.valorCupom = valor
+        personagem.id = id
+        personagem.nome = nome
+        personagem.genero = genero
+        personagem.tipo = tipo
+        personagem.totalcoin = totalcoin
+        personagem.latitude = latitude
+        personagem.longitude = longitude
+        personagem.skin = skin
+        
 
-        const dt = await this.#conexao.updateCupom(cupom.codCupom, cupom.nomeCupom, cupom.validadeCupom, cupom.valorCupom, cupom.id)
+        const dt = await this.#conexao.updatePersonagens(personagem.nome, personagem.genero,personagem.tipo, personagem.totalcoin,personagem.latitude,personagem.longitude,personagem.skin, personagem.id)
         return dt
     }
 

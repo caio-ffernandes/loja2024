@@ -61,7 +61,19 @@ class CoinDAO {
     }
 
    
+    async atualizarCoins(id, nome, valor, imagem){
 
+        const coin = new Coin()
+
+        coin.id = id
+        coin.nome = nome
+        coin.valor = valor
+        coin.imagem = imagem
+        
+
+        const dt = await this.#conexao.updateCoins(coin.nome, coin.valor,coin.imagem, coin.id)
+        return dt
+    }
 
     async apagarCoin(id){
      const dados =  await this.#conexao.deleteCoins(id)

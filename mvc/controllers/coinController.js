@@ -60,41 +60,42 @@ module.exports = (app) => {
     })
 
 
-app.post('/registrarcoin', upload.single('imagem'), async (req, res) => {
- const coinDAO= new CoinDAO;
-    try {
-      const extensao = path.extname(req.file.originalname);
-      const nomeArquivo = crypto.createHash('md5').update(req.file.originalname + Date.now().toString()).digest('hex') + extensao;
-
-      const caminhoDestino = path.join(__dirname, '..', 'views', 'public', 'images', 'upload', nomeArquivo);
-
-      await fs.rename(req.file.path, caminhoDestino);
-
-      console.log('Upload bem-sucedido');
-
-      const {
-        txtid: id,
-        txtnomecoin: nome,
-        txtlcoin: valor,
-        
-      } = req.body;
-
-
-      let status;
-
-      if (!id) {
-        status = await coinDAO.registrarCoin( nome, valor,nomeArquivo);
-      } else {
-        status = await coinDAO.atualizar(nome, valor,nomeArquivo, id);
-      
+    app.post('/registrarcoin', upload.single('imagem'), async (req, res) => {
+      const coinDAO = new CoinDAO;
+      try {
+          const extensao = path.extname(req.file.originalname);
+          const nomeArquivo = crypto.createHash('md5').update(req.file.originalname + Date.now().toString()).digest('hex') + extensao;
+  
+          const caminhoDestino = path.join(__dirname, '..', 'views', 'public', 'images', 'upload', nomeArquivo);
+  
+          await fs.rename(req.file.path, caminhoDestino);
+  
+          console.log('Upload bem-sucedido');
+  
+          const {
+              txtid: id,
+              txtnomecoin: nome,
+              txtlcoin: valor,
+          } = req.body;
+  
+          console.log('ID recebido:', id); // Adicione este log para verificar se o ID está presente na requisição
+  
+          let status;
+  
+          if (!id) {
+              console.log('Registrando nova moeda:', nome);
+              status = await coinDAO.registrarCoin(nome, valor, nomeArquivo);
+          } else {
+              console.log('Atualizando moeda com ID:', id);
+              status = await coinDAO.atualizarCoins(nome, valor, nomeArquivo, id);
+          }
+          res.json({ status });
+      } catch (error) {
+          console.error(error);
+          res.status(500).send('Erro ao realizar o upload. É necessário selecionar uma imagem');
       }
-      res.json({ status });
-    } catch (error) {
-      console.error(error);
-      
-      res.status(500).send('Erro ao realizar o upload. É necessário selecionar uma imagem');
-    }
   });
+  
   
   app.delete("/coin/:id", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
@@ -105,28 +106,14 @@ app.post('/registrarcoin', upload.single('imagem'), async (req, res) => {
     res.json({
       status
     })
-  })
+  });
 
-    app.get("/cupom/alterar/:id", async (req, res) => {
-        const cupomDAO = new CupomDAO()
+  app.get("/coin/alterar/:id", async (req, res) => {
+    const coin = new CoinDAO()
+    const coins = await coin.consultarCoinId(req.params.id)
+    res.render('coin/alteracoin', { coin:coins })
+})
 
-        const dtcupom = await cupomDAO.consultarCuponId(req.params.id)
-        
 
-        res.render("cupom/upcupons", { cupom: dtcupom  })
-    })
-
-    app.put("/cupom/alterar", async (req, res) => {
-        const cupomDAO = new CupomDAO();
-        res.setHeader("Access-Control-Allow-Origin","*")
-
-        //Destructuring
-        const {nome, codigo, validade, valor, id } = req.body
-
-        const r = await cupomDAO.atualizarCupom(id, nome, codigo, validade,valor)
-
-        res.json({r})
-        
-
-    })
+    
 }

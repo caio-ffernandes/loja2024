@@ -74,20 +74,22 @@ module.exports = (app) => {
     app.get("/personagem/alterar/:id", async (req, res) => {
         const personagemDAO = new PersonagemDAO()
 
-        const dtpersonagem = await PersonagemDAO(req.params.id)
+        const dtpersonagem = await personagemDAO.consultarPersonagemId(req.params.id)
         
+        const skin = new SkinDAO()
+        let lista_skins = await skin.consultarSkins()
 
-        res.render("personagem/upcupons", { personagem: dtpersonagem  })
+        res.render("personagens/uppersonagens", { personagem: dtpersonagem ,skins:lista_skins })
     })
 
     app.put("/personagem/alterar", async (req, res) => {
-        const personagemDAO = new personagemDAO();
+        const personagemDAO = new PersonagemDAO();
         res.setHeader("Access-Control-Allow-Origin","*")
 
         //Destructuring
-        const {nome, codigo, validade, valor, id } = req.body
+        const {nome, genero, tipo, totalcoin,latitude,longitude,skin,id } = req.body
 
-        const r = await personagemDAO.atualizarpersonagem(id, nome, codigo, validade,valor)
+        const r = await personagemDAO.atualizarPersonagem(id,nome, genero, tipo, totalcoin,latitude,longitude,skin)
 
         res.json({r})
         

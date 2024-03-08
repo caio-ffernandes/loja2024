@@ -55,9 +55,10 @@
                 </div>
 
                 <div class="row">
-                    <input type="button" onclick="atualizar()" class="btn btn-primary mt-4" value="Cadastrar"
+                    <a href="/venda/lista" onclick="atualizar()" >
+                    <input type="button" class="btn btn-primary mt-4" value="Cadastrar"
                         name="btcadcupons" id="btcadcupons" tabindex="5">
-
+                    </a>
                 </div>
             </form>
         </section>
@@ -83,9 +84,11 @@
 
             const venda = {
                 "id": document.getElementById("txtid").value,
-                "hora": document.getElementById("horavenda").value,
-                "data": document.getElementById("diavenda").value,
-                "cupom": document.getElementById("inserircupom").value
+                "hora_venda": document.getElementById("horavenda").value,
+                "dia_venda": document.getElementById("diavenda").value,
+                "skins": document.getElementById("selecioneskin").value,
+                "cupons": document.getElementById("inserircupom").value
+
             }
   
             const resposta = await fetch(`/venda/alterar`, { 
